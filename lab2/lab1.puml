@@ -1,0 +1,21 @@
+@startuml
+class com.example.myapplication.ExampleUnitTest {
++ void addition_isCorrect()
+}
+class com.example.myapplication.MainActivity {
+# void onCreate(Bundle)
+}
+class com.example.myapplication.BuildConfig {
++ {static} boolean DEBUG
++ {static} String APPLICATION_ID
++ {static} String BUILD_TYPE
++ {static} int VERSION_CODE
++ {static} String VERSION_NAME
+}
+class com.example.myapplication.ExampleInstrumentedTest {
++ void useAppContext()
+}
+
+
+androidx.appcompat.app.AppCompatActivity <|-- com.example.myapplication.MainActivity
+@enduml
