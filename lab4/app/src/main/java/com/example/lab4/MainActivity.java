@@ -1,9 +1,42 @@
-package com.example.myapplication;
+package com.example.lab4;
+
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Build;
-import android.os.Bundle;
+import android.view.Gravity;
+import android.view.MenuInflater;
+import android.view.View;
+
+import androidx.core.app.NotificationCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
+import com.example.lab4.databinding.ActivityMainBinding;
+
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
+
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,10 +69,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        Context context = getApplicationContext();
-        Toast toast = Toast.makeText(context,"Это уведомление",Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 500,500);
-        toast.show();   //first_test
+       Context context = getApplicationContext();
+        Toast toast = Toast.makeText(context,"Уведомление",Toast.LENGTH_LONG);
+       toast.setGravity(Gravity.CENTER, 500,500);
+       toast.show();   //first_test
 
 
         createNotificationChannel();
@@ -63,13 +96,13 @@ public class MainActivity extends AppCompatActivity {
                 PendingIntent.FLAG_CANCEL_CURRENT);
         Resources res = context.getResources();
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this,CHANNEL_ID)
-                .setSmallIcon(R.drawable.notification_car)
-                .setColor(Color.RED)
-                .setContentTitle("Посетите сайт")
-                .setContentText("https://vk.com/freaky_timelapse")
+                .setSmallIcon(R.drawable.ace_of_spades_svgrepo_com)
+                .setColor(Color.BLUE)
+                .setContentTitle("Дополнительные COINS после подписки")
+                .setContentText("https://vk.com/tarasovkiller")
                 .setTicker("Info").setWhen(System.currentTimeMillis())
                 .setContentIntent(contentintent) //для примера с сайтом
-                .addAction(R.drawable.sharp_lock,getString(R.string.snooze),snoozePendingIntent)
+                .addAction(R.drawable.sharp_lock,getString(R.string.ok),snoozePendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_MAX);
 
 
