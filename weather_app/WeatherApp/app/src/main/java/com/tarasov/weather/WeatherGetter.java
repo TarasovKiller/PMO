@@ -1,0 +1,109 @@
+package com.tarasov.weather;
+
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+
+import com.tarasov.weather.fragments.MainFragment;
+import com.tarasov.weather.model.AllList;
+import com.tarasov.weather.model.WeatherRequest;
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.stream.Collectors;
+
+import javax.net.ssl.HttpsURLConnection;
+
+public class WeatherGetter {
+
+
+    private static final Gson gson = new Gson();
+
+    public static void getWeatherStatic(MainFragment parent) {
+        try {
+            URL url = new URL(Constants.urlWeatherStatic +
+                    parent.getCityName()+Constants.final_url);
+            Handler handler = new Handler(Looper.getMainLooper());
+            new Thread(() -> {
+                HttpsURLConnection urlConnection;
+                try {
+                    urlConnection = (HttpsURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.setReadTimeout(1000);
+                    BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    String result = getLines(in);
+
+                    WeatherRequest weatherRequest = gson.fromJson(result, WeatherRequest.class);
+                    handler.post(() -> parent.displayWeather(weatherRequest));
+                    urlConnection.disconnect();
+                } catch (IOException e) {
+                    handler.post(parent::showError);
+                }
+            }).start();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void getWeatherForSlideMenu(String city, MainActivity parent) {
+        try {
+            URL url = new URL(Constants.urlWeatherStatic +
+                    city+Constants.final_url);
+            Handler handler = new Handler(Looper.getMainLooper());
+            new Thread(() -> {
+                HttpsURLConnection urlConnection;
+                try {
+                    urlConnection = (HttpsURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.setReadTimeout(1000);
+                    BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    String result = getLines(in);
+
+                    WeatherRequest weatherRequest = gson.fromJson(result, WeatherRequest.class);
+                    handler.post(() -> parent.displayWeather(weatherRequest));
+                    urlConnection.disconnect();
+                } catch (IOException e) {
+                   e.printStackTrace();
+                }
+            }).start();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getWeatherForRecyclers(MainFragment parent) {
+        try {
+            URL url = new URL(Constants.urlWeather7Days +
+                    parent.getCityName()+Constants.final_url);
+            Handler handler = new Handler(Looper.getMainLooper());
+            new Thread(() -> {
+                HttpsURLConnection urlConnection;
+                try {
+                    urlConnection = (HttpsURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.setReadTimeout(1000);
+                    BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    String result = getLines(in);
+
+                    AllList weatherList = gson.fromJson(result, AllList.class);
+                    handler.post(() -> parent.setupRecyclerView(weatherList.getList()));
+                    urlConnection.disconnect();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String getLines(BufferedReader in) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return in.lines().collect(Collectors.joining("\n"));
+        }
+        return null;
+    }
+}

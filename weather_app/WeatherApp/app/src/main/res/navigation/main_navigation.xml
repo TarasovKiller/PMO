@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/home_nav">
+
+    <fragment
+        android:id="@+id/home_nav"
+        android:name="com.tarasov.weather.fragments.MainFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_main">
+        <argument
+            android:name="cityName"
+            android:defaultValue="DefaultString"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/settings_nav"
+        android:name="com.tarasov.weather.fragments.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings"/>
+    <fragment
+        android:id="@+id/developers_nav"
+        android:name="com.tarasov.weather.fragments.DevelopersFragment"
+        android:label="@string/menu_developers"
+        tools:layout="@layout/developers_fragment" />
+</navigation>
